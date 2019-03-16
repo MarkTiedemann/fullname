@@ -1,0 +1,19 @@
+install:
+  - ps: iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
+  - ps: scoop bucket add extras
+  - ps: scoop install visualc
+artifacts:
+  - path: fullname.exe
+    name: fullname.exe
+build_script:
+  - cl fullname.c /link secur32.lib
+test_script:
+  - fullname
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: gskuIEvm/3WstF5xkqyBHD2w+qmfvKS7WsulFPQX9ZTj0bcGWxpikHjdnyJi7ksn
+  artifact: fullname.exe
+  on:
+    APPVEYOR_REPO_TAG: true
+    APPVEYOR_REPO_NAME: MarkTiedemann/fullname
